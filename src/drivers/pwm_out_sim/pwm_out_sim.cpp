@@ -118,12 +118,12 @@ private:
 	int			_control_subs[actuator_controls_s::NUM_ACTUATOR_CONTROL_GROUPS];
 	px4_pollfd_struct_t	_poll_fds[actuator_controls_s::NUM_ACTUATOR_CONTROL_GROUPS];
 	unsigned	_poll_fds_num;
-	int		_armed_sub;
-	orb_advert_t	_outputs_pub;
+	int		_armed_sub{-1};
+	orb_advert_t	_outputs_pub{nullptr};
 	unsigned	_num_outputs;
 	bool		_primary_pwm_device;
-	unsigned 	_pwm_min[_max_actuators];
-	unsigned 	_pwm_max[_max_actuators];
+	unsigned 	_pwm_min[_max_actuators] {};
+	unsigned 	_pwm_max[_max_actuators] {};
 
 	uint32_t	_groups_required;
 	uint32_t	_groups_subscribed;
@@ -135,8 +135,8 @@ private:
 
 	MixerGroup	*_mixers;
 
-	actuator_controls_s _controls[actuator_controls_s::NUM_ACTUATOR_CONTROL_GROUPS];
-	orb_id_t	_control_topics[actuator_controls_s::NUM_ACTUATOR_CONTROL_GROUPS];
+	actuator_controls_s _controls[actuator_controls_s::NUM_ACTUATOR_CONTROL_GROUPS] {};
+	orb_id_t	_control_topics[actuator_controls_s::NUM_ACTUATOR_CONTROL_GROUPS] {};
 
 	static void	task_main_trampoline(int argc, char *argv[]);
 	void		task_main();
@@ -209,6 +209,8 @@ PWMSim::PWMSim() :
 	for (unsigned i = 0; i < actuator_controls_s::NUM_ACTUATOR_CONTROL_GROUPS; i++) {
 		_control_subs[i] = -1;
 	}
+
+	_debug_enabled = true;
 }
 
 PWMSim::~PWMSim()
